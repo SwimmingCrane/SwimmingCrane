@@ -21,9 +21,9 @@
 
 
 module div_clk(
-input wire clk,
-input wire [25:0] count_control,
-output reg div_clk
+    input wire clk,
+    input wire [31:0] count_control,
+    output reg div_clk
     );
     
     reg [31:0] count;
@@ -34,16 +34,15 @@ output reg div_clk
     temp_clk=0;
     end
     
-    always @ (posedge clk)
-    begin
-    if(count==count_control)
-      begin
-        temp_clk<=~temp_clk;
-        count<=0;
-      end
-    else
-      count<=count+1;
-      div_clk<=temp_clk;
+    always @ (posedge clk) begin
+        if(count>=count_control-1)
+          begin
+            temp_clk<=~temp_clk;
+            count<=0;
+          end
+        else
+          count<=count+1;
+          div_clk<=temp_clk;
     end
     
 endmodule
